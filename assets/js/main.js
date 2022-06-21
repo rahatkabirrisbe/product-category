@@ -2,16 +2,10 @@ const formEl = document.querySelector('form')
 const inputNameEl = document.querySelector('.product-name')
 const inputPriceEl = document.querySelector('.product-price')
 const  ulElement = document.querySelector('.list-group')
-
+const searchElm = document.querySelector('#filter')
 
 // Data Layer 
-let data = [
-    // {
-    //     id: 0,
-    //     name: productName,
-    //     price: productPrice,
-    // }
-];
+let data = [];
 
 // event Listener
 formEl.addEventListener('submit', (e) => {
@@ -45,15 +39,40 @@ ulElement.addEventListener('click', (e) => {
     }
 })
 
+searchElm.addEventListener('keyup', (e)=>{
+    // console.log(e.target.value);
+    const showData = filteredData(e.target.value);
+    // console.log(showData);
+    showFilterItemToUI(showData)
+
+})
 
 // logical function
+function showFilterItemToUI(data){
+    ulElement.innerHTML = '';
+    data.forEach(product => {
+        
+        const liHTMLElm = `<li class="list-group-item collection-item" id="item-${product.id}">
+        <strong>${product.productName}</strong>- <span class="price">$${product.productPrice}</span>
+        <i class="fa fa-trash float-right"></i>
+        </li>`
+        ulElement.insertAdjacentHTML('afterbegin', liHTMLElm)
+
+    })
+}
+
+function filteredData(value){
+    return data.filter(product => product.productName.includes(value) || product.productPrice.includes(value))
+}
+
 function removeDataFromUI(id){
     document.querySelector(`#${id}`).remove()
 }
+
 function removeDataFromTracking(id){
     const idNum = Number(id.split('-')[1])
     data = data.filter(product => product.id !== idNum)
-
+    
 }
 
 function getItemByID(elm){
