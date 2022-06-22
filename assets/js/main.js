@@ -34,8 +34,8 @@ formEl.addEventListener('submit', (e) => {
 
 ulElement.addEventListener('click', (e) => {
     // console.log(e.target.classList.contains('fa-trash'));
+    const id = getItemByID(e.target)
     if(e.target.classList.contains('fa-trash')){
-        const id = getItemByID(e.target)
         removeDataFromUI(id)
         removeDataFromTracking(data, id)
         removeDataFromLocalStorage(id);
@@ -142,7 +142,7 @@ function resetInput(name, price){
 }
 
 function validationInput(name, price){
-    if(name.length > 2 && parseFloat(price) > 0){
+    if(isNaN(parseFloat(name)) &&  name.length >= 2 && Number(price) >= 0){
         return true;
     } else {
         return false;
